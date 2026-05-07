@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7.0
+    container_name: hyperlocal-db
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_DATABASE: hyperlocal
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - hyperlocal-network
+
+  redis:
+    image: redis:7.0
+    container_name: hyperlocal-redis
+    ports:
+      - '6379:6379'
+    networks:
+      - hyperlocal-network
+
+volumes:
+  mongo_data:
+
+networks:
+  hyperlocal-network:
+    driver: bridge
