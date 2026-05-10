@@ -43,7 +43,12 @@ const shopSchema = new mongoose.Schema(
     operatingHours: {
       open: String,
       close: String,
+      days: {
+        type: [String],
+        default: ['mon', 'tue', 'wed', 'thu', 'fri'],
+      },
     },
+    upiId: String,
     rating: {
       type: Number,
       default: 0,

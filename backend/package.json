@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "seed": "node seeds/seedDatabase.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -14,6 +15,10 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.0",
     "mongoose": "^8.0.0",
+    "razorpay": "^2.9.1",
     "socket.io": "^4.7.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
   }
 }

@@ -27,8 +27,8 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      enum: ['buyer', 'seller', 'admin'],
-      default: 'buyer',
+      enum: ['customer', 'shop_owner', 'admin'],
+      default: 'customer',
     },
     profilePicture: {
       type: String,
@@ -49,6 +49,12 @@ const userSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    favoriteShops: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Shop',
+      },
+    ],
   },
   { timestamps: true }
 );

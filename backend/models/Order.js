@@ -16,7 +16,7 @@ const orderSchema = new mongoose.Schema(
       ref: 'Shop',
       required: true,
     },
-    products: [
+    items: [
       {
         product: {
           type: mongoose.Schema.Types.ObjectId,
@@ -42,21 +42,28 @@ const orderSchema = new mongoose.Schema(
       default: 'upi',
     },
     paymentId: String,
-    orderStatus: {
+    status: {
       type: String,
-      enum: ['pending', 'accepted', 'ready', 'delivered', 'cancelled'],
+      enum: ['pending', 'accepted', 'rejected', 'preparing', 'ready_for_pickup', 'completed', 'cancelled'],
       default: 'pending',
     },
-    deliveryAddress: {
-      street: String,
-      city: String,
-      state: String,
-      zipCode: String,
-      country: String,
-      phone: String,
+    orderStatus: {
+      type: String,
+      enum: ['pending', 'accepted', 'rejected', 'preparing', 'ready_for_pickup', 'completed', 'cancelled'],
+      default: 'pending',
+    },
+    pickupCode: String,
+    estimatedPreparationTime: {
+      type: Number,
+      default: 15,
+    },
+    couponCode: String,
+    discountAmount: {
+      type: Number,
+      default: 0,
     },
     specialInstructions: String,
-    estimatedDelivery: Date,
+    readyAt: Date,
     completedAt: Date,
     cancelledAt: Date,
     cancellationReason: String,
@@ -72,11 +79,15 @@ const orderSchema = new mongoose.Schema(
 
 // Generate unique order number
 orderSchema.pre('save', async function (next) {
-  if (!this.orderNumber) {
-    const count = await mongoose.model('Order').countDocuments();
-    this.orderNumber = `ORD-${Date.now()}-${count + 1}`;
-  }
-  next();
-});
+    if (!this.orderNumber) {
+      const count = await mongoose.model('Order').countDocuments();
+      this.orderNumber = `ORD-${Date.now()}-${count + 1}`;
+    }
+    if (!this.pickupCode) {
+      this.pickupCode = Math.random().toString(36).slice(2, 8).toUpperCase();
+    }
+    this.status = this.orderStatus;
+    next();
+  });
 
 module.exports = mongoose.model('Order', orderSchema);

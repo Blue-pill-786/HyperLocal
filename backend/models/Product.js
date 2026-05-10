@@ -26,7 +26,12 @@ const productSchema = new mongoose.Schema(
       min: 0,
     },
     images: [String],
+    imageUrl: String,
     sku: String,
+    prepTimeMinutes: {
+      type: Number,
+      default: 10,
+    },
     isAvailable: {
       type: Boolean,
       default: true,
